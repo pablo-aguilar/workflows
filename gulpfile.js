@@ -16,6 +16,7 @@ var jsSources = [
 
 var sassSources = ['components/sass/style.scss' ]
 
+// compiles coffee to js
 gulp.task('coffee',function(){
   gulp.src(coffeeSource)
     .pipe(coffee({bare:true})
@@ -23,13 +24,15 @@ gulp.task('coffee',function(){
     .pipe(gulp.dest('components/scripts'))
 });
 
-gulp.task('js',function (){
+// Combines js script
+gulp.task('js', function (){
   gulp.src(jsSources)
     .pipe(concat('script.js'))
     .pipe(browserify())
     .pipe(gulp.dest('builds/development/js'))
 });
 
+// Compass for Sass
 gulp.task('compass',function(){
   gulp.src(sassSources)
     .pipe(compass({
@@ -40,3 +43,5 @@ gulp.task('compass',function(){
     .on('error', gutil.log)
     .pipe(gulp.dest('builds/development/css'))
 });
+// Runs All
+gulp.task('default',['coffee','js','compass']);
