@@ -1,3 +1,4 @@
+
 var gulp =  require('gulp'),
     gutil = require('gulp-util'),
     coffee = require('gulp-coffee'),
@@ -15,7 +16,27 @@ var jsSources = [
   'components/scripts/template.js'
 ]
 
+var htmlSources = [
+  'builds/development/*.html'
+]
+
+var jsonSources = [
+  'builds/development/js/*.json'
+]
+
 var sassSources = ['components/sass/style.scss' ]
+
+// watch HTML
+gulp.task('html', function(){
+  gulp.src(htmlSources )
+    .pipe(connect.reload())
+});
+
+// watch json
+gulp.task('json', function(){
+  gulp.src(jsonSources )
+    .pipe(connect.reload())
+});
 
 // compiles coffee to js
 gulp.task('coffee',function(){
@@ -47,6 +68,7 @@ gulp.task('compass',function(){
     .pipe(connect.reload())
 });
 
+// Live load
 gulp.task('connect', function(){
   connect.server({
     root:'builds/development/',
@@ -55,12 +77,14 @@ gulp.task('connect', function(){
 });
 
 // Runs on default
-gulp.task('default',['coffee','js','compass','connect','watch']);
+gulp.task('default',['html','json','coffee','js','compass','connect','watch']);
 
 
 // Watches for change
 gulp.task('watch',function(){
   gulp.watch(coffeeSource, ['coffee']);
   gulp.watch(jsSources, ['js']);
+  gulp.watch(htmlSources, ['html']);
+  gulp.watch(jsonSources, ['json']);
   gulp.watch('components/sass/*.scss', ['compass']);
 });
